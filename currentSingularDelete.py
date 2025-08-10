@@ -3,110 +3,23 @@ import re
 import time
 from collections import Counter
 
+# I defintely can make this more efficient later
+# But this script works for finding the singular files
+# From seraching form the first two tags then to one tag.
+# My Job just needed the singular files gone and brute forcing
+# it was the easiest way for me to do it.
 
-
-# MXX01X
-# RXX01
-
-# 212 singular files
-directory = "/Users/avryjackson/Desktop/TestFolder"
 file_name = "newsorted.txt"
-file_name2 = "test2.txt"
-sortedFile = "mysortedfile.txt"
-sortedTest = "sortedTest.txt"
-psdtxt = "test5psd.txt"
-fileTag1 = "UMXXX01X.txt"
-fileTag2 = "URXX01.txt"
-uneditedList = "Unedited List.txt"
-underscore = "underscore.txt"
-newFile = "UeditedList.txt"
-checkFile = "testteset.txt"
-ourfirstTagFile = "testTag.txt"
-untagPart1 = "testuntag.txt"
-listwithoutunderscores = "testlistwithoutunderscores.txt"
-
-
-# example = "fjasdjaw copy"
-
-# print(example)
-# print(example.rstrip())
-# time.sleep(100)
-
-# with open(file_name, 'w') as file:
-#     file.write("T")
-# print(f"File '{file_name}' created successfully.")
-
-
-
-# with open(file_name, "w") as file:
-#     for root, dirs, files in os.walk(directory):
-#         for i in files:
-#             file_name = os.path.join(i.strip())
-#             print(i)
-#             file.write(file_name)
-#             file.write("\n")
-
-
-
-
-# number we ned to get is 2388
-
-arrayNames = []
-psdNames = []
-mxx = []
-rxx = []
-
-# with open(sortedFile, "r") as file:
-#     for line in file:
-#         if ".psd" in line:
-#             print(line)
-#             psdNames.append(line)
-#         else:
-#             # lineNames = line.split("-",1)
-#             print(line)
-#             arrayNames.append(line)
-
-# with open(uneditedList, "r") as file:
-#     for line in file:
-#         if "MXX01X" in line:
-#             print(line)
-#             mxx.append(line)
-
-# with open(uneditedList, "r") as file:
-#     for line in file:
-#         if "RXX01" in line:
-#             print(line)
-#             rxx.append(line)
-
-# with open(fileTag1,"w") as file:
-#     for i in mxx:
-#         file.write(i)
-
-
-# with open(fileTag2,"w") as file:
-#     for i in rxx:
-#         file.write(i)
-
 filenewArr = []
-# with open(sortedFile, "r") as file:
-#     for line in file:
-#         if "_" in line and ".psd" not in line:
-#             print(line)
-#             mxxNew.append(line)
 
-newFile = []
-tempArr = []
-count = 0
-prevLine =""
-newStr = ""
-tempCount = 0
-iteratorCount = 0
-checkArr = []
 arrC = []
-
+# original file of the jewelry folder
 with open(file_name,"r") as file:
     for line in file:
         arrC.append(line.lower())
+
+# Just fair warning I honestly probably have too many variables in the file.
+# I was testing a lot for this script.
 
 print(arrC)
 tempstring = ""
@@ -125,16 +38,17 @@ for word in arrC:
         for i in range(len(word)):
           
             char = word[i]
-
             # we skip word
             if ".psd" in word:
                 # basically were gunna save all these files somewhere else
+                # since there not actual hosted files and they are photoshop files.
                 break
             if char == ".":
                 break
             if char == " ":
                 break
             try:
+                # building array to check patterns.
                 if char == "_":
                     arrayCharCheck.append("_")
                 if char == "-":
@@ -168,7 +82,7 @@ for word in arrC:
 
             tempstring += char
  
-        print(f"this is the temp string {tempstring}")
+        print(f"This is the temp string {tempstring}")
         print("\n")
         if tempstring == "":
             continue
@@ -177,7 +91,7 @@ for word in arrC:
             arrCheck.append(tempstring)
             
         if count == 0:
-            print("where at the first count")
+            print("Where at the first count")
             pass
         else:
             pass
@@ -185,6 +99,8 @@ for word in arrC:
         count += 1
         arrayCharCheck = []
         originalString.append(word)
+        # appending the edited string and the original filename
+        # in order to keep tract which index and name for later use.
         tupleString.append([word,tempstring])
 
 print("arrayCheck3 below")
@@ -194,17 +110,12 @@ for word in arrCheck:
 
 print(len(arrCheck))
 
-# with open(listwithoutunderscores,"w") as file:
-#     for word in arrCheck:
-#         file.write(word + "\n")
-
-
 for word in tupleString:
     print(f" word 1 = {word[0]} word 2 = {word[1]}")
    
 print("\n")
 
-# arrayCheck below
+# The comment below is just Testing for the pointer logic
 # ['MXXX01-IIII', 'MXXX01-IIII2', 'UURRF', 'UURRF444', 'aaa', 'aaa', 'MXXX01-IIII', 'MXXX01-IIII', 'MXXX01-IIII', 'MFHSADFJ-', 'MFHSADFJ234234-']
 lengthOfArray = len(arrCheck) - 1
 markerArr = []
@@ -213,6 +124,9 @@ buildWord = ""
 buildCount = 0
 firstTagArr = []
 arrWithWhiteSpaces = []
+
+# Checks the postions of the current word.
+# Marks the index at where there is a singular file.
 for index in range(len(arrCheck)):
 
         if index == 0:
@@ -232,25 +146,23 @@ for index in range(len(arrCheck)):
                 print(f"this is our current pointer {index}")
                 print(f" first word: {arrCheck[index - 1]} : {index - 1} | current word: {arrCheck[index]} : {index} \n third word: {arrCheck[index + 1]} : {index + 1}")
                 print("\n")
-                # if the prev word, current word
-                #        same word, same word
-                #        differnt word, different word
-
+      
                 # if arrCheck[index - 1 ] == arrCheck[index]:
                         # if the current word = the first word and the first word does not equal the next word
 
-                        #            pointer
-                        # same word, same word, different word
-                        # we need to delete if its 
-
+               
+                    #            pointer
+                    # same word, same word, different word
+                    # we need to keep the current pointer
                 if arrCheck[index] == arrCheck[index - 1] and arrCheck[index + 1] !=arrCheck[index]:
                     print("\n")
                     print("True1 so we just continue and move index , Same Word, Same Word, Different Word")
                     print("\n")
                     print("-------------------------------------------")
                     continue
-                       #                pointer
-                # differnt word, current word, different word
+                    #                pointer
+                    # differnt word, current word, different word
+                    # we need to deltete the current pointer since the other positions of the words are differnt.
                 elif arrCheck[index] != arrCheck[index - 1] and arrCheck[index] != arrCheck[index+1]:
                     print("False so we delete the current pointer value.")
                     print(f"Current Value = {arrCheck[index]}")
@@ -287,7 +199,8 @@ for i in range(len(markerArr)):
 
 
 prefixes = []
-
+# we are making another array with only the first prefix here instead
+# of splitting by two above.
 for i in range(len(tupleString)):
     word = tupleString[i][0].strip()
     if "-" in word:
@@ -296,10 +209,15 @@ for i in range(len(tupleString)):
     else:
         prefixes.append(word)
 
-# Now you have prefixes corresponding to each original entry.
+# now we have prefixes corresponding to each original entry.
 print(prefixes)
-
 markerArr = []
+
+# same exact method as above we just go through one more time and check the first tag only since there
+# was still duplicates. 
+
+# Checks the postions of the current word.
+# Marks the index at where there is a singular file.
 for index in range(len(prefixes)):
 
         if index == 0:
@@ -319,16 +237,7 @@ for index in range(len(prefixes)):
                 print(f"this is our current pointer {index}")
                 print(f" first word: {prefixes[index - 1]} : {index - 1} | current word: {prefixes[index]} : {index} \n third word: {prefixes[index + 1]} : {index + 1}")
                 print("\n")
-                # if the prev word, current word
-                #        same word, same word
-                #        differnt word, different word
-
-                # if arrCheck[index - 1 ] == arrCheck[index]:
-                        # if the current word = the first word and the first word does not equal the next word
-
-                        #            pointer
-                        # same word, same word, different word
-                        # we need to delete if its 
+             
 
                 if prefixes[index] == prefixes[index - 1] and prefixes[index + 1] !=prefixes[index]:
                     print("\n")
@@ -336,8 +245,9 @@ for index in range(len(prefixes)):
                     print("\n")
                     print("-------------------------------------------")
                     continue
-                       #                pointer
+                #                pointer
                 # differnt word, current word, different word
+                # we need to deltete the current pointer since the other positions of the words are differnt.
                 elif prefixes[index] != prefixes[index - 1] and prefixes[index] != prefixes[index+1]:
                     print("False so we delete the current pointer value.")
                     print(f"Current Value = {prefixes[index]}")
@@ -367,11 +277,11 @@ for i in range(len(markerArr)):
     print(arrCheck[val])
 
 
-
 print(len(markerArr))
 
 finalArr = []
 count = 0
+# cleaning up array for deletion
 tupleString = [(x[0].strip(), x[1]) for x in tupleString]
 for i in range (len(markerArr)):
     val = markerArr[i]
@@ -379,20 +289,15 @@ for i in range (len(markerArr)):
     finalArr.append(tupleString[val][0])
     count+= 1
 
-
 for index in finalArr:
     print(index)
-
 
 print(len(arrCheck))
 print(count)
 
+directory = ""
 
-
-import os
-
-directory = "/Users/avryjackson/Desktop/TestFolder"
-
+# Finally Deleting All the marked files
 
 # for filename in finalArr:
 #     full_path = os.path.join(directory, filename)
@@ -401,5 +306,5 @@ directory = "/Users/avryjackson/Desktop/TestFolder"
 #         print(f"Deleted: {full_path}")
 #     else:
 #         print(f"Not found: {full_path}")
+
 print("end")
-time.sleep(10000)
