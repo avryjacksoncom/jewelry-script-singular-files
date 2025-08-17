@@ -1,7 +1,7 @@
 I had a folder with about 12,000 image files. Some of these images had alternate versions 
 (like edits or variations), and others were just single, standalone files.
 
-My task was to delete the images that only had one version—basically, get rid of any image 
+My task was to delete the images that only had one version basically, get rid of any image 
 that didn’t have duplicates.
 
 To do this, I used the tags in the filenames. First, I parsed and extracted the first two tags 
